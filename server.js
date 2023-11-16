@@ -1,46 +1,53 @@
-
-const { json } = require('body-parser');
-const express = require('express');
+const { json } = require("body-parser");
+const express = require("express");
 const App = express();
+const fs = require("fs");
 
-const HOSTNAME = 'localhost';
-const PORT = '3000';
+const HOSTNAME = "localhost";
+const PORT = "3000";
 
-let notes = [
-  {
-    id: 1,
-    content: "backend using node.js",
-    important: true,
-  },
-  {
-    id: 2,
-    content: "node.js is a open source",
-    important: false,
-  },
-  {
-    id: 3,
-    content: "simple web server using node.js",
-    important: true,
-  },
-  {
-    id: 4,
-    content: "express makes backend restful painless",
-    important: true,
-  },
-  {
-    id: 5,
-    content: "backend restful using nodejs will grow complex",
-    important: false,
-  },
-];
-App.get('/', (req, res) => {
-    res.send('hello world');
-})
+App.get("/", (req, res) => {
+  res.send("hello world");
+});
 
-App.get("/api/notes", (req, res) => {
-  res.json(notes);
+App.get("/create/.txt", (req, res) => {
+  const content = new Date();
+  const filename =
+    "Date_" +
+    content.getDate() +
+    "-" +
+    (content.getMonth() + 1) +
+    "-" +
+    content.getFullYear() +
+    ",Time_" +
+    content.getHours() +
+    "-" +
+    content.getMinutes() +
+    "-" +
+    content.getSeconds();
+  fs.writeFile(`./${filename.toString()}.txt`, content.toString(), (err) => {
+    if (err) console.log(err);
+    console.log("file created successfully...");
+  });
+  res.send(`File name with ${filename.toString()} created Successfully...`);
+});
+
+App.get("/files", (req, res) => {
+  const dir = "./";
+
+    fs.readdir(dir, (err, files) => {
+        let data = [];
+    files.forEach((file) => {
+      if (file.split(".")[1] == "txt") {
+          
+          data = data.concat(file);
+      }
+    });
+        res.send(data.join("\n").toString());
+        console.log(data.join("\n").toString());
+  });
 });
 
 App.listen(PORT, () => {
-    console.log(`server running at http://${HOSTNAME}:${PORT}`);
-})
+  console.log(`server running at http://${HOSTNAME}:${PORT}`);
+});

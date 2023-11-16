@@ -25,7 +25,7 @@ App.get("/create/.txt", (req, res) => {
     content.getMinutes() +
     "-" +
     content.getSeconds();
-  fs.writeFile(`./${filename.toString()}.txt`, content.toString(), (err) => {
+  fs.writeFile(`./Files/${filename.toString()}.txt`, content.toString(), (err) => {
     if (err) console.log(err);
     console.log("file created successfully...");
   });
@@ -33,7 +33,7 @@ App.get("/create/.txt", (req, res) => {
 });
 
 App.get("/files", (req, res) => {
-  const dir = "./";
+  const dir = "./Files/";
 
     fs.readdir(dir, (err, files) => {
         let data = [];

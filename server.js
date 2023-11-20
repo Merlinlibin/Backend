@@ -7,7 +7,9 @@ const HOSTNAME = "localhost";
 const PORT = "3000";
 
 App.get("/", (req, res) => {
-  res.send("hello world");
+  res.send(
+    "Please use endpoints: /create/.txt- to create &&  /files to lists world"
+  );
 });
 
 App.get("/create/.txt", (req, res) => {
@@ -25,26 +27,29 @@ App.get("/create/.txt", (req, res) => {
     content.getMinutes() +
     "-" +
     content.getSeconds();
-  fs.writeFile(`./Files/${filename.toString()}.txt`, content.toString(), (err) => {
-    if (err) console.log(err);
-    console.log("file created successfully...");
-  });
+  fs.writeFile(
+    `./Files/${filename.toString()}.txt`,
+    content.toString(),
+    (err) => {
+      if (err) console.log(err);
+      console.log("file created successfully...");
+    }
+  );
   res.send(`File name with ${filename.toString()} created Successfully...`);
 });
 
 App.get("/files", (req, res) => {
   const dir = "./Files/";
 
-    fs.readdir(dir, (err, files) => {
-        let data = [];
+  fs.readdir(dir, (err, files) => {
+    let data = [];
     files.forEach((file) => {
       if (file.split(".")[1] == "txt") {
-          
-          data = data.concat(file);
+        data = data.concat(file);
       }
     });
-        res.send(data.join("\n").toString());
-        console.log(data.join("\n").toString());
+    res.send(data.join("\n").toString());
+    console.log(data.join("\n").toString());
   });
 });
 
